@@ -1,16 +1,18 @@
 % changePlotAppearance - Change the settings of the plot, including the
-% title, axes, and axis labels 
+% title, axes, and axis labels. Written for usage with accompanying
+% plotting functions.
 %
 % Usage: 
-%   settings = additionalUserInput(settings)
+%   changePlotAppearance( plot_settings )
 %
 % Arguments:
-%
+%   plot_settings   - Struct containing plotting settings. See 
+%                       defaultPlotSettings.m for more information.
 %
 % Dependencies: 
 %   MATLAB Version >= 9.5 
 %
-% Tessa Morris
+% Tessa Altair Morris
 % Advisor: Anna Grosberg, Department of Biomedical Engineering 
 % Cardiovascular Modeling Laboratory 
 % University of California, Irvine 

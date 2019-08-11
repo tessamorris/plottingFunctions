@@ -2,7 +2,7 @@
 % a set of different conditions
 %
 % Usage: 
-%   settings = additionalUserInput(settings)
+%   data_vals = [1,2,3,4,1,2,4]; plotMeanStdev( data_vals ); 
 %
 % Arguments:
 %   data_vals       - Data to plot the mean and standard deviation of 
@@ -10,30 +10,31 @@
 %
 %   plot_info       - (OPTIONAL) Structural array containing plot settings
 %                       Class Support: STRUCT
-%       plot_info.colors
-% 
-%       plot_info.marks
-%       plot_info.xtick
-%       plot_info.xticklabel
-%       plot_info.fontsize 
 %       
 %   data_labels     - (OPTIONAL) Numerical labels for data that will be 
 %                       plotted along the x-axis. 
 %                       Class Support: Nx1 (or 1xN) real numerical  
 % Returns:
-%   settings - zlineDetection parameters appended with additional 
-%               parameters 
-%               Class Support: STRUCT
+%   avg_val         - Average value 
+%                       Class Support: number of unique labels x 1 vector
+%   stdev_val       - Average minus (:,1) or plus (:,2) the standard 
+%                       devation
+%                       Class Support: number of unique labels x 2 vector
+%   cond_des        - Label associated with data (1 if no labels provided)
 %
 % Dependencies: 
 %   MATLAB Version >= 9.5 
+%   changePlotAppearance.m
+%   correctUpperBound.m
+%   defaultPlotSettings.m
 %
-% Tessa Morris
+% Tessa Altair Morris
 % Advisor: Anna Grosberg, Department of Biomedical Engineering 
 % Cardiovascular Modeling Laboratory 
 % University of California, Irvine 
 
-function [] = plotMeanStdev( data_vals, plot_settings, data_labels )
+function [ avg_val,stdev_val, cond_des ] = ...
+    plotMeanStdev( data_vals, plot_settings, data_labels )
 
 % If plot info is not provided create an empty struct 
 if nargin == 1
@@ -47,10 +48,10 @@ if nargin < 3
 end 
 
 % Get the number of unique sorting data 
-sort_unique = unique(data_labels); 
+unique_labels = unique(data_labels); 
 
 %Number of unique_data 
-n = length(sort_unique); 
+n = length(unique_labels); 
 
 % Store the average and standard devation 
 cond_des = zeros(n,1); 
@@ -81,15 +82,15 @@ m = 0;  % Marker style
 figure; 
 hold on; 
 
-% Loop through all of the unique values, calculate the meean, standard
+% Loop through all of the unique labels, calculate the mean, standard
 % deviations
 for k = 1:n
     % Save the current unique value 
-    cond_des(k,1) = sort_unique(k); 
+    cond_des(k,1) = unique_labels(k); 
     
     % Store the temporary data
     temp_data = data_vals(:); 
-    temp_data(data_labels ~= sort_unique(k)) = []; 
+    temp_data(data_labels ~= unique_labels(k)) = []; 
     % Calculate the mean and standard deviation 
     avg_val(k,1) = mean(temp_data); 
     temp_std = std(temp_data); 
