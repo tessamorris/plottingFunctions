@@ -73,10 +73,9 @@ bin_size = bins(2) - bins(1);
 
 % Save the number of bins  
 nb = plot_settings.num_bins; 
-
 %Initialize arrays to store the approximate data value and the number of
 %points in that position 
-approx_values = zeros( nlabel, nb-1 ); 
+approx_values = zeros( 1, nb-1 ); 
 counts = zeros( nlabel, nb-1 ); 
 
 % Loop through all of the unique labels 
@@ -88,7 +87,7 @@ for k = 1:nlabel
 
     % Loop through all of the bin values and store the number of points in
     % that bin 
-    for b = 1:nb
+    for b = 1:(nb-1)
         
         % If this is the first iteration, store the average value of the
         % bin
@@ -111,7 +110,7 @@ end
 max_c = max(counts(:)); 
 
 % Calculate the shift between points 
-x_shift = 1/max_c; 
+x_shift = round(1/max_c,3); 
 
 % Initialize the matrix to store the x positions for each count 
 xavail = ones(max_c,2); 
@@ -143,79 +142,37 @@ for k = 1:nlabel
     dtot = sum(counts(k,:)); 
     x = zeros(1,dtot); 
     y = zeros(1,dtot);     
-    
+
     % Initialize the end positions 
     end_pos = 0; 
-    
     %Get the data points to plot
-    for b = 1:nb
-        
+    for b = 1:(nb-1)
+ 
         % If there is more than one count in the current bin, get the x
         % points 
         if counts(k,b) > 0 
             
-        %Calculate the start and end positions 
-        start_pos = end_pos + 1; 
-        end_pos = start_pos - 1 + counts(1,b);
+            %Calculate the start and end positions 
+            start_pos = end_pos + 1; 
+            end_pos = start_pos - 1 + counts(k,b);
 
-        %Get the current bin value 
-        y(1,start_pos:end_pos) = approx_values(k,b)*ones(counts(k,b),1); 
-       
-        % Get the current x values
-        x(1,start_pos:end_pos) = ...
-            xavail(counts(k,b),1):x_shift:xavail(counts(k,b),2); 
-        end 
+            %Get the current bin value 
+            y(1,start_pos:end_pos) = ...
+                approx_values(1,b)*ones(counts(k,b),1); 
+            
+            % Get the current x values
+            x(1,start_pos:end_pos) = ...
+                ((k-1)+xavail(counts(k,b),1)):x_shift:...
+                ((k-1)+xavail(counts(k,b),2)); 
         
-        hold on; 
-        %Plot data points 
-        plot(x,y,'o','MarkerFaceColor', plotsettings.makerfill, ...
-            'MarkerEdgeColor',plotsettings.markeredge ); 
-
+        end 
+       
     end 
+    
+    hold on; 
+    plot(x,y,'o'); 
+    clear x y 
 end 
-
-
-% %Adjust the x minimum and maximum values
-% max_x = max(x(:)); 
-% min_x = min(x(:)); 
-% 
-% %Plot mean & standard deviation or median + iqr depending on what is asked
-% %plot settings.stats == 1 (median and interquartile range 
-% if plotsettings.stats == 1
-%     %Calculate the median and sort  the data
-%     median_value = median(data_points(:)); 
-%     sorted_data = sort(data_points(:)); 
-%     %Compute 25th & 75th percentile 
-%     q25 = median( sorted_data(sorted_data < median_value) );
-%     q75 = median( sorted_data(sorted_data > median_value) );
-%     iqr_value = iqr(data_points(:)); 
-%     iqr_min = q25-1.5*iqr_value; 
-%     iqr_max = q75+1.5*iqr_value; 
-%     
-%     %Create a box of the interquartile range 
-%     fill([min_x, max_x, max_x, min_x], ...
-%     [q25, q25, q75, q75],plotsettings.boxfill, 'FaceAlpha', ... 
-%     plotsettings.transparency);    
-%     %Plot the median 
-%     plot([min_x,max_x], [median_value,median_value],'-', ...
-%         'color',plotsettings.statcolor,'LineWidth',2); 
-%     
-%     %Get the min and max x positions for the plot (1/2 length) 
-%     max_x = (x_pos + max_x) / 2; 
-%     min_x = (x_pos + min_x) / 2; 
-%     
-%     %Plot min iqr      
-%     plot([min_x, max_x, x_pos, x_pos], ...
-%         [iqr_max, iqr_max, iqr_max, q75], ...
-%         '-', ...
-%         'color',plotsettings.statcolor,'LineWidth',1); 
-%     %Plot min and max with iqr      
-%     plot([x_pos, x_pos, max_x, min_x], ...
-%         [q25, iqr_min, iqr_min, iqr_min], ...
-%         '-', ...
-%         'color',plotsettings.statcolor,'LineWidth',1); 
-% end 
-
 
 end
 
