@@ -129,6 +129,7 @@ end
 if ~isfield(plot_settings, 'linecolor')
     plot_settings.linecolor = plot_settings.colors; 
 end
+
 % Color of the marker edge
 if ~isfield(plot_settings, 'markercoloredge')
     plot_settings.markercoloredge = plot_settings.colors; 
@@ -138,12 +139,29 @@ if ~isfield(plot_settings, 'markercolorfill')
     plot_settings.markercolorfill = plot_settings.colors; 
 end
 
+% Color of the box (for bar plot and mean,median plots)
+if ~isfield(plot_settings, 'colorfill')
+    plot_settings.colorfill = plot_settings.colors; 
+end
+
+
 % Dot plot only; number of bins 
 default_binnum = 20; 
 if ~isfield(plot_settings, 'num_bins')
     plot_settings.num_bins = default_binnum; 
 end 
 
+% Bar plot, box plot, and mean plot 
+default_boxwidth = 0.9; 
+if ~isfield(plot_settings,'box_width')
+    plot_settings.box_width = default_boxwidth; 
+end 
+
+% Set the default transparency of a box to 0.3
+default_transparency = 0.4; 
+if ~isfield(plot_settings,'bar_transparency')
+    plot_settings.bar_transparency = default_transparency;
+end 
 %%%%%%%%%%%%%%%%%%%%%% Formatting the Plot %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Default font sizes for the axes and label
