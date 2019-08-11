@@ -134,9 +134,14 @@ for k = 2:max_c
     end 
 end 
 
+% Start counting variables for all of the colors and markers  
+mc = 0; % Marker fill color
+me = 0; % Marker edge color
+m = 0;  % Marker style 
 
 % Loop through all of the unique labels 
 for k = 1:nlabel
+    
     
     %Initialize plotting x and y for the current label. 
     dtot = sum(counts(k,:)); 
@@ -145,6 +150,14 @@ for k = 1:nlabel
 
     % Initialize the end positions 
     end_pos = 0; 
+    
+    % Correct the color/marker indices tracker. 
+    mc = correctUpperBound( mc + 1, ...
+        length(plot_settings.markercolorfill), 1 ); 
+    me = correctUpperBound( me + 1, ...
+        length(plot_settings.markercoloredge), 1 ); 
+    m = correctUpperBound( m + 1, length(plot_settings.marks), 1 ); 
+    
     %Get the data points to plot
     for b = 1:(nb-1)
  
@@ -170,9 +183,14 @@ for k = 1:nlabel
     end 
     
     hold on; 
-    plot(x,y,'o'); 
+    plot(x,y, plot_settings.marks{m},...
+        'MarkerEdgeColor', plot_settings.markercoloredge{me},...
+        'MarkerFaceColor', plot_settings.markercolorfill{mc});  
     clear x y 
-end 
+end
+
+% Change the plot area
+changePlotAppearance( plot_settings ); 
 
 end
 
