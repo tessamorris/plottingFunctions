@@ -1,4 +1,9 @@
-function [] = barPlot(mean_val, x, plot_settings)
+function [] = barPlot(top_val, x, plot_settings, c)
+
+% If plot info is not provided create an empty struct 
+if nargin < 3 
+    plot_settings = struct(); 
+end 
 
 % Set the transparency equal to 1 so that the bar is not transparent
 plot_settings.bar_transparency = 1; 
@@ -9,20 +14,53 @@ plot_settings = defaultPlotSettings( plot_settings );
 % Set the width of the bar equal to the 
 xwidth = plot_settings.box_width; 
 
-% Set the bounds of the box 
-minx = x-(xwidth/2);
-miny = 0; 
-maxx = x+(xwidth/2);
-maxy = mean_val; 
+% Make sure that the length of x is the same as the number of values 
+if length(top_val) ~= length(x)
+    x = 1:length(top_val); 
+end 
 
-c = 1; 
-plot_settings.colorfill{c} = 'r'; 
-% Create a fill 
-fill([minx, maxx, maxx, minx], ...
-    [miny,miny,maxy,maxy],  plot_settings.colorfill{c}, ...
-    'FaceAlpha', plot_settings.bar_transparency,...
-    'linestyle', plot_settings.linetype{c},...
-    'EdgeColor', plot_settings.linecolor{c},...
-    'LineWidth', plot_settings.linewidth)
+% If the count c is not provided, loop through the provided colors 
+if nargin < 4 
+    lt = 0; % Line type
+    lc = 0; % Line color 
+    cf = 0; % Marker fill color
+else
+    % Set the counting variables equal to c if it is within bounds 
+    lc = correctUpperBound( c, length(plot_settings.linecolor) );
+    lt = correctUpperBound( c, length(plot_settings.linetype) );
+    cf = correctUpperBound( c, length(plot_settings.colorfill) ); 
+end 
+
+% Loop through all of the top values 
+for k = 1:length(top_val)
+    % Set the bounds of the box 
+    minx = x(k)-(xwidth/2);
+    miny = 0; 
+    maxx = x(k)+(xwidth/2);
+    maxy = top_val(k); 
+
+    if nargin < 4 
+        % Correct the color/marker indices tracker. 
+        lc = correctUpperBound( lc + 1, ...
+            length(plot_settings.linecolor), 1 );
+        lt = correctUpperBound( lt + 1, ...
+            length(plot_settings.linetype), 1 );
+        cf = correctUpperBound( cf + 1, ...
+            length(plot_settings.colorfill), 1 ); 
+    end 
+    hold on; 
+    
+    % Create a fill 
+    fill([minx, maxx, maxx, minx], ...
+        [miny,miny,maxy,maxy],  plot_settings.colorfill{cf}, ...
+        'FaceAlpha', plot_settings.bar_transparency,...
+        'linestyle', plot_settings.linetype{lt},...
+        'EdgeColor', plot_settings.linecolor{lc},...
+        'LineWidth', plot_settings.linewidth)
+end 
+
+% Change the plot area
+changePlotAppearance( plot_settings ); 
+
 end 
 
