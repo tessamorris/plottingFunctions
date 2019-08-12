@@ -47,12 +47,10 @@ if plot_settings.typeMean
     % Store the average and standard devation
     avg_val = zeros(n,1); 
     stdev_val = zeros(n,2); 
-    disp('Plotting mean and standard deviation'); 
 else
     % Store the average and standard devation
     median_val = zeros(n,1); 
     iqr_val = zeros(n,2); 
-    disp('Plotting median and interquartile range'); 
 end 
 
 
@@ -61,8 +59,7 @@ lt = 0;     % Line type for mean/median
 blc = 0;    % Line color for box 
 lc = 0;     % Line color for mean/median 
 cf = 0;     % Color fill for box 
-blt = 0;    % Box line type 
-
+bt = 0;     % Border type 
 % Open a figure and hold on
 hold on; 
 
@@ -97,8 +94,8 @@ for k = 1:n
         % Sort the data 
         sorted_data = sort(temp_data); 
         %Compute 25th & 75th percentile 
-        q25 = median( sorted_data(sorted_data < median_value) );
-        q75 = median( sorted_data(sorted_data > median_value) );
+        q25 = median( sorted_data(sorted_data < median_val(k,1)) );
+        q75 = median( sorted_data(sorted_data > median_val(k,1)) );
         % Calculate the interquartile range 
         iqr_value = iqr( temp_data ); 
         % Get the values at the interquartile range 
@@ -120,17 +117,16 @@ for k = 1:n
     % Correct the color/marker indices tracker. 
     blc = correctUpperBound( blc + 1, length(plot_settings.bordercolor), 1); 
     cf = correctUpperBound( cf + 1, length(plot_settings.colorfill), 1 ); 
-    blt = correctUpperBound( blt + 1, length(plot_settings.bodertype), 1 ); 
     lt = correctUpperBound( lt + 1, length(plot_settings.linetype), 1 ); 
     lc = correctUpperBound( lc + 1, length(plot_settings.linecolor), 1);
-    
+    bt = correctUpperBound( bt + 1, length(plot_settings.bordertype), 1);
     %Create a box of either the interquartile range or the standard
     %deviation 
     fill([ min_x, max_x, max_x, min_x ], ...
         [ min_val,min_val,max_val,max_val ],  ...
         plot_settings.colorfill{cf}, ...
         'FaceAlpha', plot_settings.filltransparency,...
-        'linestyle', plot_settings.bodertype{blt},...
+        'linestyle', plot_settings.bordertype{bt},...
         'EdgeColor', plot_settings.bordercolor{blc},...
         'LineWidth', plot_settings.borderwidth)
     

@@ -114,9 +114,9 @@ end
 % Border type
 if ~isfield(plot_settings,'bordertype')
     if ~plot_settings.typeMean
-        plot_settings.barlinetype = default_linetype;
+        plot_settings.bordertype = default_linetype;
     else
-        plot_settings.barlinetype = 'None';
+        plot_settings.bordertype = {'None'};
     end 
 end 
 % Border Width

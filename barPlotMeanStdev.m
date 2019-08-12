@@ -38,8 +38,7 @@ plot_settings = defaultPlotSettings( plot_settings );
 lt = 0; % Line type
 lc = 0; % Line color 
 
-% Open a figure and hold on
-figure; 
+% Make sure to hold on
 hold on; 
 
 % Loop through all of the unique labels, calculate the mean, standard
