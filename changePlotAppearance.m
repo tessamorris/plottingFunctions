@@ -43,7 +43,7 @@ end
 
 % Change the x tick labels 
 if plot_settings.changeXticklabel
-    set(gca,'XTick',plot_settings.xticklabel);
+    set(gca,'XTickLabel',plot_settings.xticklabel);
 end 
 
 % Change the rotation of the x-ticks 
@@ -92,13 +92,13 @@ if plot_settings.addXaxislabel
 end 
 % Change the y label
 if plot_settings.addYaxislabel
-    ylabel(plot_settings.ylabel,'FontSize', plot_settings.xlabelsize, ...
+    ylabel(plot_settings.ylabel,'FontSize', plot_settings.ylabelsize, ...
         'FontWeight', 'bold');
 end 
 
 % Change the title 
 if plot_settings.addTitle
-    title(plot_settings.title, 'FontSize', plot_settings.ylabelsize, ...
+    title(plot_settings.title, 'FontSize', plot_settings.titlesize, ...
         'FontWeight', 'bold'); 
 end 
 

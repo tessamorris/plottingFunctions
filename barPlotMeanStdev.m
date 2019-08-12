@@ -31,7 +31,6 @@ x = 1:n;
 % Set the x-ticks to only be where there is data
 plot_settings.xtick = x; 
 
-% Set the 
 % Check the plot settings
 plot_settings = defaultPlotSettings( plot_settings ); 
 

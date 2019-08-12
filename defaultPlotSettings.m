@@ -6,67 +6,18 @@
 %   plot_settings = defaultPlotSettings( plot_settings );
 %
 % Arguments:
-%   plot_settings   - structural array that contains plotting descriptions. 
+%   plot_settings   - structural array that contains plotting descriptions.
+%                       See PlotSettingsDescriptions.pdf for a detailed
+%                       description of fields. 
+%                       Class Support: STRUCT
+% Returns:
+%   plot_settings   - structural array that contains plotting descriptions
+%                       with the default settings added to the user defined
+%                       descriptions. 
+%                       See PlotSettingsDescriptions.pdf for a detailed
+%                       description of fields. 
 %                       Class Support: STRUCT
 %
-% Returns:
-%   plot_settings.changeXlimits - logical describing if the user wants to
-%                                   changed the x-axis limits
-%   plot_settings.changeYlimits - logical describing if the user wants to
-%                                   changed the y-axis limits
-%   plot_settings.setXticks     – logical statement to change location of 
-%                                   x-ticks
-%
-% Optional Arguments / Returns:
-% The input can be an empty struct and the following settings will be
-% defined: 
-%       Default for mean and standard deviation bars: black bars with a 
-%       black filled in circle at the mean. The bar width is default set 
-%       to 0.25. No title or axis labels will be provided. 
-%
-% The user can also define any of the following 
-%   > Change plot lines 
-%       plot_settings.linecolor
-%       plot_settings.linetype
-%       plot_settings.linewidth
-%   > Change marker 
-%       plot_settings.marks
-%       plot_settings.markercoloredge = default_color; 
-%       plot_settings.markercolorfill = default_color; 
-%       plot_settings.markersize = default_markersize; 
-%  
-%   > Change axis limits 
-%       plot_settings.xmin - lower limit of xaxis, set by user if desired
-%       plot_settings.xmax- upper limit of xaxis, set by user if desired
-%       plot_settings.ymin - lower limit of yaxis, set by user if desired
-%       plot_settings.ymax- upper limit of yaxis, set by user if desired
-%   > Font sizes 
-%       plot_settings.font_size – numerical size of numbers in plot
-
-% plot_settings.xtick – positions to place x-ticks 
-% plot_settings.changeXticklabel – logical statement to change x tick labels
-% plot_settings.xticklabel – labels of x-ticks  
-% plot_settings.changeXtickfont – logical to change size of font
-% plot_settings.xtickfontsize – font size of x-axis
-% plot_settings.setYticks – logical statement to change location of y-ticks
-% plot_settings.ytick – positions to place y-ticks 
-% plot_settings.changeYticklabel – logical statement to change y tick labels
-% plot_settings.yticklabel – labels of y-ticks  
-% plot_settings.changeYtickfont – logical to change size of font
-% plot_settings.ytickfontsize – font size of y-axis
-% plot_settings.addTitle – logical to add title
-% plot_settings.title – string describing title 
-% plot_settings.titlesize – font size of title 
-% plot_settings.addXaxislabel – logical to add x-axis label
-% plot_settings.xlabel – string describing x-axis
-% plot_settings.xlabelsize – font size of x-axis 
-% plot_settings.addYaxislabel – logical to add y-axis label
-% plot_settings.ylabel – string describing y-axis
-% plot_settings.ylabelsize – font size of y-axis 
-%
-% Dot plot only 
-%plot_settings.num_bins 
-
 % Dependencies: 
 %   MATLAB Version >= 9.5 
 %
@@ -77,21 +28,26 @@
 
 function [ plot_settings ] = defaultPlotSettings( plot_settings )
 
-%%%%%%%%%%%%%%%%%%%%% Settings for Plotting %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%% Markers, Line, and Box Settings %%%%%%%%%%%%%%%%%%%%%%%%
+% Defaults: 
+default_marker = {'o'};     % Marker Type
+default_markersize = 10;    % Marker Size
+default_linewidth = 1;      % Line Width
+default_linetype = {'-'};   % Line Type 
+default_color = {'k'};      % Default Color 
+default_binnum = 20;        % Number of bins for dot plot 
+default_sp = 0.25;          % Spacing of standard deviation bars
+default_boxwidth = 0.9;     % Width of the boxes 
+default_transparencybox = 0.3;	% Transparency of box plots
+default_transparencybar = 1;    % Transparency of bar plots 
 
-% Default for mean and standard deviation bars: black bars with a black
-% filled in circle at the mean. The bar width is default set to 0.25
+% Set the overall color is not defined 
+if ~isfield(plot_settings, 'colors')
+    plot_settings.colors = default_color; 
+end
 
-% Set the spacing of the standard deviation bars
-default_sp = 0.25; 
-if ~isfield(plot_settings, 'sp')
-    plot_settings.sp = default_sp;
-end 
-
-% Set the default marker and size if it is not declared. 
-default_marker = {'o'}; 
-default_markersize = 10; 
-
+%>>>>> Markers 
+% Marker Type 
 if ~isfield(plot_settings, 'marks')
     plot_settings.marks = default_marker; 
 else
@@ -100,36 +56,10 @@ else
         plot_settings.marks = {plot_settings.marks}; 
     end 
 end
-
+% Marker Size 
 if ~isfield(plot_settings, 'markersize')
     plot_settings.markersize = default_markersize; 
 end
-
-% Set the default linewidth 
-default_linewidth = 1; 
-if ~isfield(plot_settings, 'linewidth')
-    plot_settings.linewidth = default_linewidth;
-end 
-
-% Set the default line type
-default_linetype = {'-'}; 
-if ~isfield(plot_settings, 'linetype')
-    plot_settings.linetype = default_linetype; 
-end 
-
-% Set the default color for all of the plot to be black 
-default_color = {'k'}; 
-
-% Set the default color if it is not defined. 
-if ~isfield(plot_settings, 'colors')
-    plot_settings.colors = default_color; 
-end
-
-% Color of the lines
-if ~isfield(plot_settings, 'linecolor')
-    plot_settings.linecolor = plot_settings.colors; 
-end
-
 % Color of the marker edge
 if ~isfield(plot_settings, 'markercoloredge')
     plot_settings.markercoloredge = plot_settings.colors; 
@@ -139,29 +69,78 @@ if ~isfield(plot_settings, 'markercolorfill')
     plot_settings.markercolorfill = plot_settings.colors; 
 end
 
-% Color of the box (for bar plot and mean,median plots)
-if ~isfield(plot_settings, 'colorfill')
-    plot_settings.colorfill = plot_settings.colors; 
+%>>>>> Lines 
+% Line Width 
+if ~isfield(plot_settings, 'linewidth')
+    plot_settings.linewidth = default_linewidth;
+end 
+% Line Type
+if ~isfield(plot_settings, 'linetype')
+    plot_settings.linetype = default_linetype; 
+end 
+
+% Color of the lines
+if ~isfield(plot_settings, 'linecolor')
+    plot_settings.linecolor = plot_settings.colors; 
 end
 
+%>>>>> Specific Plotting: Box plot 
+% Determine if this is a box plot by determining if the type of boxplot is
+% defined. 
+if ~isfield(plot_settings, 'typeMean')
+    plot_settings.isBox = false; 
+    plot_settings.typeMean = false; 
+else
+    plot_settings.isBox = true; 
+end 
 
-% Dot plot only; number of bins 
-default_binnum = 20; 
+%>>>>> Fill  
+% Color of the fill
+if ~isfield(plot_settings, 'colorfill')
+    plot_settings.colorfill = plot_settings.colors;
+end 
+% Fill transparency
+if ~isfield(plot_settings,'filltransparency')
+    if plot_settings.isBox 
+        plot_settings.filltransparency = default_transparencybox;
+    else
+        plot_settings.filltransparency = default_transparencybar;
+    end 
+end 
+% Border color 
+if ~isfield(plot_settings,'bordercolor')
+    plot_settings.bordercolor = default_color;
+end 
+% Border type
+if ~isfield(plot_settings,'bordertype')
+    if ~plot_settings.typeMean
+        plot_settings.barlinetype = default_linetype;
+    else
+        plot_settings.barlinetype = 'None';
+    end 
+end 
+% Border Width
+if ~isfield(plot_settings,'borderwidth')
+    plot_settings.borderwidth = default_linewidth;
+end 
+
+%>>>>> Specific Plotting: Dot plot 
+% Number of bins 
 if ~isfield(plot_settings, 'num_bins')
     plot_settings.num_bins = default_binnum; 
 end 
 
-% Bar plot, box plot, and mean plot 
-default_boxwidth = 0.9; 
+%>>>>> Specific Plotting: Standard Deviation Bars
+% Set the spacing of the standard deviation bars
+if ~isfield(plot_settings, 'sp')
+    plot_settings.sp = default_sp;
+end 
+
+%>>>>> Specific Plotting: Box and Bar plots
 if ~isfield(plot_settings,'box_width')
     plot_settings.box_width = default_boxwidth; 
 end 
 
-% Set the default transparency of a box to 0.3
-default_transparency = 0.4; 
-if ~isfield(plot_settings,'bar_transparency')
-    plot_settings.bar_transparency = default_transparency;
-end 
 %%%%%%%%%%%%%%%%%%%%%% Formatting the Plot %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Default font sizes for the axes and label
