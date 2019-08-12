@@ -46,6 +46,16 @@ if ~isfield(plot_settings, 'colors')
     plot_settings.colors = default_color; 
 end
 
+%>>>>> Specific Plotting: Box plot 
+% Determine if this is a box plot by determining if the type of boxplot is
+% defined. 
+if ~isfield(plot_settings, 'typeMean')
+    plot_settings.isBox = false; 
+    plot_settings.typeMean = false; 
+else
+    plot_settings.isBox = true; 
+end 
+
 %>>>>> Markers 
 % Marker Type 
 if ~isfield(plot_settings, 'marks')
@@ -72,11 +82,20 @@ end
 %>>>>> Lines 
 % Line Width 
 if ~isfield(plot_settings, 'linewidth')
-    plot_settings.linewidth = default_linewidth;
+    if ~plot_settings.typeMean && plot_settings.isBox
+        plot_settings.linewidth = 3; 
+    else
+        plot_settings.linewidth = default_linewidth; 
+    end 
+    
 end 
 % Line Type
 if ~isfield(plot_settings, 'linetype')
-    plot_settings.linetype = default_linetype; 
+    if ~plot_settings.typeMean && plot_settings.isBox
+        plot_settings.linetype = {'--'}; 
+    else
+        plot_settings.linetype = default_linetype; 
+    end 
 end 
 
 % Color of the lines
@@ -84,20 +103,15 @@ if ~isfield(plot_settings, 'linecolor')
     plot_settings.linecolor = plot_settings.colors; 
 end
 
-%>>>>> Specific Plotting: Box plot 
-% Determine if this is a box plot by determining if the type of boxplot is
-% defined. 
-if ~isfield(plot_settings, 'typeMean')
-    plot_settings.isBox = false; 
-    plot_settings.typeMean = false; 
-else
-    plot_settings.isBox = true; 
-end 
 
 %>>>>> Fill  
 % Color of the fill
 if ~isfield(plot_settings, 'colorfill')
-    plot_settings.colorfill = plot_settings.colors;
+    if ~plot_settings.typeMean && plot_settings.isBox
+        plot_settings.colorfill = {'w'}; 
+    else
+        plot_settings.colorfill = plot_settings.colors; 
+    end 
 end 
 % Fill transparency
 if ~isfield(plot_settings,'filltransparency')

@@ -156,7 +156,7 @@ data_vals = [1,2:0.1:3,4,6,20];
 % Change the title 
 plot_settings.title = 'Median and Standard Deviation';
 % Plot the mean and standard deviation 
-boxPlot( data_vals, plot_settings, data_labels ); 
+boxPlot( data_vals, plot_settings ); 
 % Clear the plot_settings so that the settings do not carry over into the
 % next exmple
 clear plot_settings
@@ -172,7 +172,7 @@ plot_settings.title = 'Mean and Shaded Standard Deviation';
 % Set the type of box plot equal to mean
 plot_settings.typeMean = true; 
 % Plot the mean and standard deviation 
-boxPlot( data_vals, plot_settings, data_labels ); 
+boxPlot( data_vals, plot_settings ); 
 % Clear the plot_settings so that the settings do not carry over into the
 % next exmple
 clear plot_settings
