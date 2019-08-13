@@ -31,9 +31,9 @@ if nargin < 3
     save_extension = '.pdf'; 
 end 
 
-% Add the directory "fileHelpers" to the current path in order to append
-% the filename if it exists
-addpath(fullfile(pwd,'fileHelpers')); 
+% % Add the directory "fileHelpers" to the current path in order to append
+% % the filename if it exists
+% addpath('fileHelpers'); 
 
 % Determine if the save name contains the extension 
 hasExtension = contains( save_name, save_extension ); 

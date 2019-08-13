@@ -75,32 +75,35 @@ set(gca, 'fontsize', plot_settings.font_size, 'FontWeight', 'bold');
 
 % Change the size of the x ticks 
 if plot_settings.changeXtickfont
-    set(gca,'XTickLabel', 'fontsize', plot_settings.xtickfontsize); 
+    set(gca,'XTickLabel', 'fontsize', plot_settings.xtickfontsize, ...
+        'Color','k'); 
 end
 
 % Change the size of the y ticks 
 if plot_settings.changeYtickfont
-    set(gca,'YTickLabel', 'fontsize', plot_settings.ytickfontsize); 
+    set(gca,'YTickLabel', 'fontsize', plot_settings.ytickfontsize, ...
+        'Color','k');  
 end
 
 %%%%%%%%%%%%%%%%%%%% axis labels and titles %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Change the x labels 
 if plot_settings.addXaxislabel
-    xlabel(plot_settings.xlabel,'FontSize', plot_settings.titlesize, ...
-        'FontWeight', 'bold');
+    xlabel(plot_settings.xlabel,'FontSize', plot_settings.xlabelsize, ...
+        'FontWeight', 'bold','Color', 'k');
 end 
 % Change the y label
 if plot_settings.addYaxislabel
     ylabel(plot_settings.ylabel,'FontSize', plot_settings.ylabelsize, ...
-        'FontWeight', 'bold');
+        'FontWeight', 'bold','Color', 'k');
 end 
 
 % Change the title 
 if plot_settings.addTitle
     title(plot_settings.title, 'FontSize', plot_settings.titlesize, ...
-        'FontWeight', 'bold'); 
+        'FontWeight', 'bold','Color', 'k');
 end 
+
 
 end
 

@@ -78,8 +78,7 @@ mc = 0; % Marker fill color
 me = 0; % Marker edge color
 m = 0;  % Marker style 
 
-% Open a figure and hold on
-figure; 
+% Hold on 
 hold on; 
 
 % Loop through all of the unique labels, calculate the mean, standard

@@ -36,7 +36,7 @@ default_linewidth = 1;      % Line Width
 default_linetype = {'-'};   % Line Type 
 default_color = {'k'};      % Default Color 
 default_binnum = 20;        % Number of bins for dot plot 
-default_sp = 0.25;          % Spacing of standard deviation bars
+default_sp = 0.2;          % Spacing of standard deviation bars
 default_boxwidth = 0.9;     % Width of the boxes 
 default_transparencybox = 0.3;	% Transparency of box plots
 default_transparencybar = 1;    % Transparency of bar plots 
@@ -182,7 +182,7 @@ else
     % Set the change label to false unless the x ticks have also been
     % changed and they are the smae length
     plot_settings.changeXticklabel = false; 
-    if isfield(plot_settings, 'xtick')
+    if isfield(plot_settings, 'xtick') 
         if length(plot_settings.xticklabel) == length(plot_settings.xtick)
             plot_settings.changeXticklabel = true;        
         end 
@@ -214,16 +214,17 @@ end
 % Check if the y tick labels are changed, must also declare where the
 % y-ticks are located. If it has the same number of points then it can be
 % declared. 
-if ~isfield(plot_settings, 'yticklabel') && ...
-        ~isfield(plot_settings, 'ytick')
+if ~isfield(plot_settings, 'yticklabel')
     plot_settings.changeYticklabel = false; 
 else
-    if length(plot_settings.yticklabel) == length(plot_settings.ytick)
-        plot_settings.changeYticklabel = true;
-    else
-        plot_settings.changeYticklabel = false; 
+    % Set the change label to false unless the x ticks have also been
+    % changed and they are the smae length
+    plot_settings.changeYticklabel = false; 
+    if isfield(plot_settings, 'ytick')
+        if length(plot_settings.yticklabel) == length(plot_settings.ytick)
+            plot_settings.changeYticklabel = true;        
+        end 
     end 
-    
 end
  
 % Check if the y tick rotation is changed 

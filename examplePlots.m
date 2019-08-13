@@ -154,7 +154,7 @@ figure;
 % Provide raw data
 data_vals = [1,2:0.1:3,4,6,20]; 
 % Change the title 
-plot_settings.title = 'Median and Standard Deviation';
+plot_settings.title = 'Median and IQR';
 % Plot the mean and standard deviation 
 boxPlot( data_vals, plot_settings ); 
 % Clear the plot_settings so that the settings do not carry over into the
