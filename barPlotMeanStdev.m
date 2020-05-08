@@ -1,4 +1,5 @@
-function [] = barPlotMeanStdev( data_vals, plot_settings, data_labels )
+function [ cond_des, avg_val, stdev_val, num_vals] = ...
+    barPlotMeanStdev( data_vals, plot_settings, data_labels )
 % If plot info is not provided create an empty struct 
 if nargin == 1
     plot_settings = struct(); 
@@ -20,7 +21,7 @@ n = length(unique_labels);
 cond_des = zeros(n,1); 
 avg_val = zeros(n,1); 
 stdev_val = zeros(n,2); 
-
+num_vals = zeros(n,1); 
 % Set the x-limits 
 plot_settings.xmin = 0;
 plot_settings.xmax = n+1; 
@@ -50,13 +51,16 @@ for k = 1:n
     % Store the temporary data
     temp_data = data_vals(:); 
     temp_data(data_labels ~= unique_labels(k)) = []; 
+    % Remove any NaN values
+    temp_data(isnan(temp_data)) = []; 
     % Calculate the mean and standard deviation 
     avg_val(k,1) = mean(temp_data); 
     temp_std = std(temp_data); 
     % Get the bounds of the standard deviation 
     stdev_val(k,1) = avg_val(k,1) - temp_std; 
     stdev_val(k,2) = avg_val(k,1) + temp_std;
-    
+    % Get the number of values 
+    num_vals(k,1) = length(temp_data); 
     %Get the maximum standard deviation 
     max_val = stdev_val(k,2); 
 

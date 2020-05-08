@@ -1,4 +1,5 @@
-function [ ] = boxPlot( data_vals, plot_settings, data_labels )
+function [ cond_des, main_output, secondary_output ] =...
+    boxPlot( data_vals, plot_settings, data_labels )
 
 % If plot info is not provided create an empty struct 
 if nargin == 1
@@ -30,11 +31,6 @@ plot_settings.xtick = x;
 % If the type of plot was not provided set it to be a 
 if ~isfield(plot_settings, 'typeMean')
     plot_settings.typeMean = false; 
-    disp('Plotting median and interquartile range.') 
-    disp('To plot mean and standard deviation: plot_settings.typeMean = true'); 
-else
-    disp('Plotting mean and standard deviation.') 
-    disp('To plot median and interquartile range: plot_settings.typeMean = false'); 
 end 
 
 % Check the plot settings
@@ -142,6 +138,15 @@ end
 % Change the plot area
 changePlotAppearance( plot_settings ); 
 
+if plot_settings.typeMean 
+    % Store the average and standard devation
+    main_output = avg_val; 
+    secondary_output = stdev_val; 
+else
+    % Store the average and standard devation
+    main_output = median_val; 
+    secondary_output = iqr_val; 
+end 
 
 
 

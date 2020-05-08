@@ -43,7 +43,7 @@ end
 
 % Change the x tick labels 
 if plot_settings.changeXticklabel
-    set(gca,'XTickLabel',plot_settings.xticklabel);
+    set(gca,'XTickLabel',plot_settings.xticklabel,'XColor','k');
 end 
 
 % Change the rotation of the x-ticks 

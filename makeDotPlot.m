@@ -1,5 +1,4 @@
-% plotMeanStdev - Plot the mean and standard deviation for one condition or
-% a set of different conditions
+% makeDotPlot - plot the data points 
 %
 % Usage: 
 %   data_vals = [1,2,3,4,1,2,4]; makeDotPlot( data_vals ); 
@@ -48,9 +47,35 @@ if nargin < 3
     data_labels = ones(size(data_vals)); 
 end 
 
-%Find the minimum and maximum values 
-min_value = min(data_vals(:)) - eps; 
-max_value = max(data_vals(:)); 
+% Get the actual min and max values 
+data_min = min(data_vals(:)); 
+data_max = max(data_vals(:)); 
+
+% Find the minimum bin value
+notGreater = true; 
+k = 0; 
+while notGreater
+    % Get the minimum value 
+    min_value = data_min - k*eps;
+    if data_min > min_value
+        notGreater = false; 
+    else
+        k = k+1; 
+    end 
+end 
+
+% Find the maximum bin value
+notLess = true; 
+k = 0; 
+while notLess
+    % Get the minimum value 
+    max_value = data_max + k*eps; 
+    if data_max < max_value
+        notLess = false; 
+    else
+        k = k+1; 
+    end 
+end
 
 % Get the number of unique sorting data 
 unique_labels = unique(data_labels); 
@@ -67,6 +92,8 @@ plot_settings = defaultPlotSettings( plot_settings );
 
 % Create the bins 
 bins = linspace(min_value, max_value, plot_settings.num_bins); 
+bins(1) = min_value; 
+bins(end) = max_value; 
 
 % Get the bin size
 bin_size = bins(2) - bins(1);
@@ -111,6 +138,18 @@ max_c = max(counts(:));
 
 % Calculate the shift between points 
 x_shift = round(1/max_c,3); 
+
+% Calculate ideal shift 
+if nlabel > 3
+    ideal_shift = 0.025*plot_settings.markersize; 
+elseif nlabel == 3
+    ideal_shift = 0.02*plot_settings.markersize; 
+else
+    ideal_shift = 0.01*plot_settings.markersize;     
+end
+
+% Set the shift to be whichever shift is smaller
+x_shift = min([x_shift, ideal_shift]); 
 
 % Initialize the matrix to store the x positions for each count 
 xavail = ones(max_c,2); 
@@ -184,9 +223,11 @@ for k = 1:nlabel
     
     hold on; 
     plot(x,y, plot_settings.marks{m},...
+        'MarkerSize', plot_settings.markersize,...
         'MarkerEdgeColor', plot_settings.markercoloredge{me},...
         'MarkerFaceColor', plot_settings.markercolorfill{mc});  
     clear x y 
+
 end
 
 % Change the plot area
