@@ -158,9 +158,9 @@ for k = 1:n
     % default kernel density estimation. 
     % INRES (University of Bonn), Katzenburgweg 5, 53115 Germany.
     % hhoffmann@uni-bonn.de
-    % Calculate the kernel density 
+    % Calculate the kernel density, the computes a probability density 
+    % estimate of the sample in the vector
     [pf, u] = ksdensity(data_vals); 
-
     %Normal kernel density 
     pf = pf/max(pf)*0.3; 
 
