@@ -160,7 +160,7 @@ for k = 1:n
     % hhoffmann@uni-bonn.de
     % Calculate the kernel density, the computes a probability density 
     % estimate of the sample in the vector
-    [pf, u] = ksdensity(data_vals); 
+    [pf, u] = ksdensity(temp_data); 
     %Normal kernel density 
     pf = pf/max(pf)*0.3; 
 
