@@ -307,3 +307,27 @@ makeDotPlot(data_vals, plot_settings, data_labels);
 clear plot_settings
 
 %% Violin plot 
+% Open a figure 
+figure; 
+% Create the first set of data and its labels 
+data_vals1 = [1,2:0.1:3,4,6,20]; 
+labels1 = ones(size(data_vals1)); 
+% Create the second set of data and its labels 
+data_vals2 = [3,4:0.2:6,7,9]; 
+labels2 = 2*ones(size(data_vals2)); 
+% Combine the data values and labels 
+data_vals = [data_vals1, data_vals2]; 
+data_labels = [labels1,labels2]; 
+% Set the bar colors to be red and then blue 
+plot_settings.colorfill = {'r','b'}; 
+% Set the type of box plot equal to mean
+plot_settings.typeMean = true; 
+% Set the color of the mean lines to be the same as the shaded regions
+plot_settings.linecolor = {'r','b'}; 
+% Set the thickness of the mean line 
+plot_settings.linewidth = 3; 
+% Change the title 
+plot_settings.title = 'Violin plot on Mean +/- Std.Dev';
+% Plot the violin plot
+[cond_des, main_output, secondary_output, type] = ...
+    plotViolin(data_vals, plot_settings, data_labels); 
