@@ -306,3 +306,4 @@ makeDotPlot(data_vals, plot_settings, data_labels);
 
 clear plot_settings
 
+%% Violin plot 
